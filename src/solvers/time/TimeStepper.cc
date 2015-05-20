@@ -367,13 +367,6 @@ void TimeStepper<D>::expand_psi()
     	  }
         }
 	  }
-//	  std::cout << "[";
-//	  for (size_t jj = 0; jj < ((d_SH_order+1) * (d_SH_order+1)); jj++)
-//	  {
-//		  std::cout << phi_lm[jj];
-//		  if (jj != (((d_SH_order+1) * (d_SH_order+1)) - 1)) std::cout << ", ";
-//		  else std::cout << "]" << std::endl;
-//	  }
 	}
   }
 
