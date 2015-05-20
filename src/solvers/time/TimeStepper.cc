@@ -14,6 +14,8 @@
 #include "kinetics/SyntheticMomentSource.hh"
 #include "utilities/MathUtilities.hh"
 #include <cmath>
+#include "angle/MomentToDiscrete.hh"
+#include "angle/MomentIndexer.hh"
 
 namespace detran
 {
@@ -44,6 +46,8 @@ TimeStepper<D>::TimeStepper(SP_input       input,
   , d_tolerance(1e-4)
   , d_maximum_iterations(1)
   , d_update_multiphysics_rhs(NULL)
+  , d_SH_expand(false)
+  , d_SH_order(0)
 {
   // Preconditions
   Require(d_input);
@@ -173,6 +177,17 @@ TimeStepper<D>::TimeStepper(SP_input       input,
     if (d_do_output) d_silooutput = new detran_ioutils::SiloOutput(d_mesh);
   }
 
+  //-------------------------------------------------------------------------//
+  // SPHERICAL HARMONICS EXPANSION PARAMETERS
+  //-------------------------------------------------------------------------//
+  if (d_input->check("expand_psi"))
+  {
+	  d_SH_expand = d_input->template get<int>("expand_psi");
+	  if (d_input->check("expansion_order"))
+	  {
+		  d_SH_order = d_input->template get<int>("expansion_order");
+	  }
+  }
 }
 
 //---------------------------------------------------------------------------//
@@ -258,6 +273,9 @@ void TimeStepper<D>::solve(SP_state initial_state)
 
     } // end iterations
 
+    // Expand psi if set in input file
+    if (d_SH_expand == 1) expand_psi();
+
     // Cycle the previous iterates and copy the current solution
     cycle_states_precursors(order);
     *d_states[0] = *d_state;
@@ -269,6 +287,100 @@ void TimeStepper<D>::solve(SP_state initial_state)
 
   } // end time steps
 
+}
+//---------------------------------------------------------------------------//
+template <class D>
+void TimeStepper<D>::expand_psi()
+{
+  const int nO = d_quadrature->number_octants();
+  const int nA = d_quadrature->number_angles_octant();
+  double Y_lm;
+  double mu;
+  double eta;
+  double xi;
+  double weight;
+  double psi;
+  double sum;
+
+  for (size_t g = 0; g < d_number_groups; ++g)
+  {
+	for (size_t c = 0; c < d_mesh->number_cells(); c++)
+	{
+	  sum = 0;
+	  double psi_approx = 0.0;
+	  // Find coefficients phi_lm
+	  std::vector<double> phi_lm((d_SH_order+1) * (d_SH_order+1));
+	  int ii = 0;
+	  for (size_t l = 0; l <= d_SH_order; ++l)
+	  {
+        for (size_t m = -l; m <= l; ++m)
+        {
+	      for (size_t o = 0; o < nO; ++o)
+	      {
+	        for (size_t a = 0; a < nA; ++a)
+	        {
+		      mu = d_quadrature->mu(o,a);
+		      if (! mu) mu = 0.0;
+		      eta = d_quadrature->eta(o,a);
+		      if (! eta) eta = 0.0;
+		      xi = d_quadrature->xi(o,a);
+		      if (! xi) xi = 0.0;
+		      weight = d_quadrature->weight(a);
+		      Y_lm = detran_angle::SphericalHarmonics::Y_lm(l,m,mu,eta,xi);
+		      psi = d_state->psi(g,o,a)[c];
+		      phi_lm[ii] += Y_lm * psi * weight;
+	        }
+	      }
+	      ii += 1;
+        }
+	  }
+
+	  double denom = 0.0;
+	  if (d_quadrature->dimension() == 1) denom = 0.5;  // denom = 1 / 2
+	  else if (d_quadrature->dimension() == 2) denom = 0.159154943;  // denom = 1 / 2pi
+	  else denom = 0.079577472;  // denom = 1 / 4pi
+
+	  // Compute expansion psi(g, i)
+	  for (size_t o = 0; o < nO; ++o)
+	  {
+	    for (size_t a = 0; a < nA; ++a)
+	    {
+		  d_state->psi(g,o,a)[c] = 0.0;
+		  mu = d_quadrature->mu(o,a);
+		  if (! mu) mu = 0.0;
+		  eta = d_quadrature->eta(o,a);
+		  if (! eta) eta = 0.0;
+		  xi = d_quadrature->xi(o,a);
+		  if (! xi) xi = 0.0;
+		  int ii = 0;
+	      for (size_t l = 0; l <= d_SH_order; ++l)
+	      {
+	        double sum = 0;
+	        double coeff = (2 * l + 1) * denom;
+            for (size_t m = -l; m <= l; ++m)
+            {
+        	  Y_lm = detran_angle::SphericalHarmonics::Y_lm(l,m,mu,eta,xi);
+        	  sum += Y_lm * phi_lm[ii];
+        	  ii += 1;
+    	    }
+            d_state->psi(g,o,a)[c] += coeff * sum;
+    	  }
+        }
+	  }
+//	  std::cout << "[";
+//	  for (size_t jj = 0; jj < ((d_SH_order+1) * (d_SH_order+1)); jj++)
+//	  {
+//		  std::cout << phi_lm[jj];
+//		  if (jj != (((d_SH_order+1) * (d_SH_order+1)) - 1)) std::cout << ", ";
+//		  else std::cout << "]" << std::endl;
+//	  }
+	}
+  }
+
+
+
+  //std::cout << Y_lm << std::endl;
+  //std::cout << d_state->psi(g,o,a)[0] << std::endl;
 }
 
 //---------------------------------------------------------------------------//

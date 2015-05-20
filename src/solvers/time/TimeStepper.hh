@@ -22,6 +22,7 @@
 #include "utilities/Definitions.hh"
 #include "utilities/SP.hh"
 #include "transport/State.hh"
+#include "angle/MomentToDiscrete.hh"
 #include <cstdio>
 
 namespace detran
@@ -81,6 +82,10 @@ public:
   /// Pointer to callback function for updating physics
   typedef void (*multiphysics_pointer)
                (void*, TimeStepper<D>*, double, double);
+  /// added for spherical harmonics expansions
+  typedef detran_angle::MomentIndexer::SP_momentindexer  SP_momentindexer;
+  typedef detran_angle::MomentToDiscrete::SP_MtoD        SP_MtoD;
+
   //-------------------------------------------------------------------------//
   // CONSTRUCTOR & DESTRUCTOR
   //-------------------------------------------------------------------------//
@@ -222,6 +227,15 @@ private:
   multiphysics_pointer d_update_multiphysics_rhs;
   /// Multiphysics data
   void* d_multiphysics_data;
+  /// Flag to use spherical harmonics expansion of psi
+  bool d_SH_expand;
+  /// Order of spherical harmonics expansion
+  size_t d_SH_order;
+  /// Indexer for Spherical Harmonics
+  SP_momentindexer d_indexer;
+  /// Moment to Discrete operator
+  SP_MtoD d_M;
+
 
   //-------------------------------------------------------------------------//
   // IMPLEMENTATION
@@ -258,6 +272,8 @@ private:
 
   /// Check convergence
   bool check_convergence();
+
+  void expand_psi();
 
 };
 
