@@ -339,18 +339,7 @@ void TimeStepper<D>::expand_psi()
 	      ii += 1;
         }
 	  }
-//	  std::cout << "ii = " << ii << ", " << g << ", " << c << std::endl;
-//	  std::cout << "phi_lm = [" << phi_lm[0];
-//	  for (int iii = 1; iii < ii; ++iii )
-//	  {
-//		  std::cout << ", " << phi_lm[iii];
-//	  }
-//	  std::cout << "]" << std::endl;
-//	  for (int iii = 0; iii < ii; ++iii )
-//	  	  {
-//	  		  std::cout << iii << " ";
-//	  	  }
-//	  std::cout << std::endl;
+
 	  double denom = 1.0;
 	  if (d_quadrature->dimension() == 1) denom = 0.5;  // denom = 1 / 2
 	  else denom = 0.079577472;  // denom = 1 / 4pi
