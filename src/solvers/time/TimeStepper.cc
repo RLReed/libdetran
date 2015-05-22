@@ -302,22 +302,25 @@ void TimeStepper<D>::expand_psi()
   double psi;
   double sum;
 
-  for (size_t g = 0; g < d_number_groups; ++g)
+  std::vector<double> phi_lm((d_SH_order+1) * (d_SH_order+1));
+
+  for (int g = 0; g < d_number_groups; ++g)
   {
-	for (size_t c = 0; c < d_mesh->number_cells(); c++)
+	for (int c = 0; c < d_mesh->number_cells(); c++)
 	{
 	  sum = 0;
 	  double psi_approx = 0.0;
 	  // Find coefficients phi_lm
-	  std::vector<double> phi_lm((d_SH_order+1) * (d_SH_order+1));
+
 	  int ii = 0;
-	  for (size_t l = 0; l <= d_SH_order; ++l)
+	  for (int l = 0; l <= d_SH_order; ++l)
 	  {
-        for (size_t m = -l; m <= l; ++m)
+        for (int m = -l; m <= l; ++m)
         {
-	      for (size_t o = 0; o < nO; ++o)
+		  phi_lm[ii] = 0.0;
+	      for (int o = 0; o < nO; ++o)
 	      {
-	        for (size_t a = 0; a < nA; ++a)
+	        for (int a = 0; a < nA; ++a)
 	        {
 		      mu = d_quadrature->mu(o,a);
 		      if (! mu) mu = 0.0;
@@ -326,7 +329,9 @@ void TimeStepper<D>::expand_psi()
 		      xi = d_quadrature->xi(o,a);
 		      if (! xi) xi = 0.0;
 		      weight = d_quadrature->weight(a);
-		      Y_lm = detran_angle::SphericalHarmonics::Y_lm(l,m,mu,eta,xi);
+		      if (d_quadrature->dimension() == 1)
+		        Y_lm = detran_angle::SphericalHarmonics::Y_lm(l,m,eta,xi,mu);
+		      else Y_lm = detran_angle::SphericalHarmonics::Y_lm(l,m,mu,eta,xi);
 		      psi = d_state->psi(g,o,a)[c];
 		      phi_lm[ii] += Y_lm * psi * weight;
 	        }
@@ -334,16 +339,26 @@ void TimeStepper<D>::expand_psi()
 	      ii += 1;
         }
 	  }
-
-	  double denom = 0.0;
+//	  std::cout << "ii = " << ii << ", " << g << ", " << c << std::endl;
+//	  std::cout << "phi_lm = [" << phi_lm[0];
+//	  for (int iii = 1; iii < ii; ++iii )
+//	  {
+//		  std::cout << ", " << phi_lm[iii];
+//	  }
+//	  std::cout << "]" << std::endl;
+//	  for (int iii = 0; iii < ii; ++iii )
+//	  	  {
+//	  		  std::cout << iii << " ";
+//	  	  }
+//	  std::cout << std::endl;
+	  double denom = 1.0;
 	  if (d_quadrature->dimension() == 1) denom = 0.5;  // denom = 1 / 2
-	  else if (d_quadrature->dimension() == 2) denom = 0.159154943;  // denom = 1 / 2pi
 	  else denom = 0.079577472;  // denom = 1 / 4pi
 
 	  // Compute expansion psi(g, i)
-	  for (size_t o = 0; o < nO; ++o)
+	  for (int o = 0; o < nO; ++o)
 	  {
-	    for (size_t a = 0; a < nA; ++a)
+	    for (int a = 0; a < nA; ++a)
 	    {
 		  d_state->psi(g,o,a)[c] = 0.0;
 		  mu = d_quadrature->mu(o,a);
@@ -353,13 +368,15 @@ void TimeStepper<D>::expand_psi()
 		  xi = d_quadrature->xi(o,a);
 		  if (! xi) xi = 0.0;
 		  int ii = 0;
-	      for (size_t l = 0; l <= d_SH_order; ++l)
+	      for (int l = 0; l <= d_SH_order; ++l)
 	      {
 	        double sum = 0;
 	        double coeff = (2 * l + 1) * denom;
-            for (size_t m = -l; m <= l; ++m)
+            for (int m = -l; m <= l; ++m)
             {
-        	  Y_lm = detran_angle::SphericalHarmonics::Y_lm(l,m,mu,eta,xi);
+              if (d_quadrature->dimension() == 1)
+                Y_lm = detran_angle::SphericalHarmonics::Y_lm(l,m,eta,xi,mu);
+              else Y_lm = detran_angle::SphericalHarmonics::Y_lm(l,m,mu,eta,xi);
         	  sum += Y_lm * phi_lm[ii];
         	  ii += 1;
     	    }
