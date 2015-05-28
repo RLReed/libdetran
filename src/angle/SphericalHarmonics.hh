@@ -178,7 +178,7 @@ namespace detran_angle
  * defined reduce to the Legendre polynomials in \f$\xi\f$.  Hence, this
  * class can be used for 1D expansions.
  *
- * Currently, only the spherical harmonics through \f$ L=3 \f$ are
+ * Currently, only the spherical harmonics through \f$ L=6 \f$ are
  * implemented, though adding capability for arbitrary orders should be
  * straightforward if external libraries are used.
  *
