@@ -329,7 +329,7 @@ void TimeStepper<D>::expand_psi()
 	      {
             for (int m = -l; m <= l; ++m)
             {
-              if ( ! (l > 0 && m == 0 && dim == 2) )
+              if ( ! ( ( (l > 0 && m == 0 ) || ( std::abs(l + m) % 2 == 1 ) ) && dim == 2 ) )
               {
             	Y_lm = detran_angle::SphericalHarmonics::Y_lm(l,m,mu,eta,xi);
             	phi_lm[ii] += Y_lm * d_state->psi(g,o,a)[c] * weight;
@@ -339,7 +339,6 @@ void TimeStepper<D>::expand_psi()
 	      }
         }
 	  }
-
 	  // Compute expansion psi(g, i)
 	  for (int o = 0; o < nO; ++o)
 	  {
@@ -352,8 +351,7 @@ void TimeStepper<D>::expand_psi()
 		  {
 			mu = d_quadrature->mu(o,a);
 			eta = d_quadrature->eta(o,a);
-			if (dim == 2) xi = 0.0;
-			else xi = d_quadrature->xi(o,a);
+			xi = d_quadrature->xi(o,a);
 		  }
 		  int ii = 0;
 	      for (int l = 0; l <= d_SH_order; ++l)

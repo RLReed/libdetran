@@ -109,7 +109,7 @@ double SphericalHarmonics::get_Y_lm(const int    l,
   else if ( l == 3 )
   {
     if ( m == -3 )
-      return 0.7905694150420948*eta*(3*mu*mu-eta*eta);
+      return 0.7905694150420948*eta*(3.0*mu*mu-eta*eta);
     else if ( m == -2 )
       return 3.872983346207417*xi*mu*eta;
     else if ( m == -1 )
@@ -128,75 +128,75 @@ double SphericalHarmonics::get_Y_lm(const int    l,
 	if ( m == -4 )
 	  return 1.4790199457749*mu*eta*(mu*mu-eta*eta);
 	else if ( m == -3 )
-	  return 2.0916500663352*xi*eta*(3*mu*mu-eta*eta);
+	  return 2.0916500663352*xi*eta*(3.0*mu*mu-eta*eta);
 	else if ( m == -2 )
-      return 1.1180339887499*mu*eta*(7*xi*xi-1);
+      return 1.1180339887499*mu*eta*(7.0*xi*xi-1.0);
     else if ( m == -1 )
-      return 1.5811388300842*eta*xi*(7*xi*xi-3);
+      return 1.5811388300842*eta*xi*(7.0*xi*xi-3.0);
     else if ( m == 0 )
-      return 0.125*(35*xi*xi*xi*xi-30*xi*xi+3);
+      return 0.125*(35*xi*xi*xi*xi-30.0*xi*xi+3.);
     else if ( m == 1 )
-      return 1.5811388300842*mu*xi*(7*xi*xi-3);
+      return 1.5811388300842*mu*xi*(7.*xi*xi-3.);
     else if ( m == 2 )
-	  return 1.1180339887499*(mu*mu-eta*eta)*(7*xi*xi-1);
+	  return 1.1180339887499*(mu*mu-eta*eta)*(7.*xi*xi-1.);
     else if ( m == 3 )
-      return 2.0916500663352*mu*xi*(mu*mu-3*eta*eta);
+      return 2.0916500663352*mu*xi*(mu*mu-3.*eta*eta);
     else if ( m == 4 )
-      return 1.4790199457749*(mu*mu*mu*mu-6*mu*mu*eta*eta+eta*eta*eta*eta);
+      return 1.4790199457749*(mu*mu*mu*mu-6.*mu*mu*eta*eta+eta*eta*eta*eta);
   }
   else if ( l == 5 )
   {
 	if ( m == -5 )
-	  return 0.7015607600201*eta*(5*mu*mu*mu*mu-10*mu*mu*eta*eta+eta*eta*eta*eta);
+	  return 0.7015607600201*eta*(5.*mu*mu*mu*mu-10.*mu*mu*eta*eta+eta*eta*eta*eta);
 	else if ( m == -4 )
 	  return 8.8741196746494*mu*eta*xi*(mu*mu-eta*eta);
 	else if ( m == -3 )
-	  return 0.5229125165838*eta*(-27*mu*mu*xi*xi+3*mu*mu+9*eta*eta*xi*xi-eta*eta);
+	  return 0.5229125165838*eta*(-27.*mu*mu*xi*xi+3.*mu*mu+9.*eta*eta*xi*xi-eta*eta);
 	else if ( m == -2 )
-	  return 5.1234753829798*mu*eta*xi*(3*xi*xi-1);
+	  return 5.1234753829798*mu*eta*xi*(3.*xi*xi-1.);
 	else if ( m == -1 )
-	  return 0.4841229182759*eta*(21*xi*xi*xi*xi-14*xi*xi+1);
+	  return 0.4841229182759*eta*(21.*xi*xi*xi*xi-14.*xi*xi+1.);
 	else if ( m == 0 )
-	  return 0.125*xi*(63*xi*xi*xi*xi-70*xi*xi+15);
+	  return 0.125*xi*(63*xi*xi*xi*xi-70.*xi*xi+15.);
 	else if ( m == 1 )
-	  return 0.4841229182759*mu*(21*xi*xi*xi*xi-14*xi*xi+1);
+	  return 0.4841229182759*mu*(21.*xi*xi*xi*xi-14.*xi*xi+1.);
 	else if ( m == 2 )
-	  return 2.5617376914899*xi*(3*mu*mu*xi*xi-mu*mu-3*eta*eta*xi*xi+eta*eta);
+	  return 2.5617376914899*xi*(3.*mu*mu*xi*xi-mu*mu-3.*eta*eta*xi*xi+eta*eta);
 	else if ( m == 3 )
-	  return 0.5229125165838*mu*(9*mu*mu*xi*xi-mu*mu-27*eta*eta*xi*xi+3*eta*eta);
+	  return 0.5229125165838*mu*(9.*mu*mu*xi*xi-mu*mu-27.*eta*eta*xi*xi+3.*eta*eta);
 	else if ( m == 4 )
-	  return 2.2185299186624*xi*(mu*mu*mu*mu-6*mu*mu*eta*eta+eta*eta*eta*eta);
+	  return 2.2185299186624*xi*(mu*mu*mu*mu-6.*mu*mu*eta*eta+eta*eta*eta*eta);
 	else if ( m == 5 )
-	  return 0.7015607600201*mu*(mu*mu*mu*mu-10*mu*mu*eta*eta+5*eta*eta*eta*eta);
+	  return 0.7015607600201*mu*(mu*mu*mu*mu-10.*mu*mu*eta*eta+5.*eta*eta*eta*eta);
   }
   else if ( l == 6 )
   {
 	if ( m == -6)
-	  return 1.3433865787628*mu*eta*(3*mu*mu*mu*mu-10*mu*mu*eta*eta+3*eta*eta*eta*eta);
+	  return 1.3433865787628*mu*eta*(3.*mu*mu*mu*mu-10.*mu*mu*eta*eta+3.*eta*eta*eta*eta);
 	else if ( m == -5 )
-	  return 2.3268138086233*eta*xi*(5*mu*mu*mu*mu-10*mu*mu*eta*eta+eta*eta*eta*eta);
+	  return 2.3268138086233*eta*xi*(5.*mu*mu*mu*mu-10.*mu*mu*eta*eta+eta*eta*eta*eta);
 	else if ( m == -4 )
-	  return 1.9843134832984*mu*eta*(-11*mu*mu*xi*xi+mu*mu+11*eta*eta*xi*xi-eta*eta);
+	  return 1.9843134832984*mu*eta*(-11.*mu*mu*xi*xi+mu*mu+11.*eta*eta*xi*xi-eta*eta);
 	else if ( m == -3 )
-	  return 0.9057110466368*eta*xi*(mu*mu*xi*xi+9*mu*mu+11*eta*eta*xi*xi-3*eta*eta);
+	  return 0.9057110466368*eta*xi*(mu*mu*xi*xi+9.*mu*mu+11.*eta*eta*xi*xi-3.*eta*eta);
 	else if ( m == -2 )
-	  return 0.9057110466368*mu*eta*(33*xi*xi*xi*xi-18*xi*xi+1);
+	  return 0.9057110466368*mu*eta*(33.*xi*xi*xi*xi-18.*xi*xi+1.);
 	else if ( m == -1 )
-	  return 2.2912878474779*eta*xi*(33*xi*xi*xi*xi-30*xi*xi+5);
+	  return 2.2912878474779*eta*xi*(33.*xi*xi*xi*xi-30.*xi*xi+5.);
 	else if ( m == 0 )
-	  return 0.0625*(231*xi*xi*xi*xi*xi*xi-315*xi*xi*xi*xi+105*xi*xi-5);
+	  return 0.0625*(231*xi*xi*xi*xi*xi*xi-315.*xi*xi*xi*xi+105.*xi*xi-5.);
 	else if ( m == 1 )
-	  return 2.2912878474779*mu*xi*(33*xi*xi*xi*xi-30*xi*xi+5);
+	  return 2.2912878474779*mu*xi*(33.*xi*xi*xi*xi-30.*xi*xi+5.);
 	else if ( m == 2 )
-	  return 0.4528555233184*(mu*mu-eta*eta)*(33*xi*xi*xi*xi-18*xi*xi+1);
+	  return 0.4528555233184*(mu*mu-eta*eta)*(33.*xi*xi*xi*xi-18.*xi*xi+1.);
 	else if ( m == 3 )
-	  return 0.9057110466368*mu*xi*(11*mu*mu*xi*xi-3*mu*mu-33*eta*eta*xi*xi+9*eta*eta);
+	  return 0.9057110466368*mu*xi*(11.*mu*mu*xi*xi-3.*mu*mu-33.*eta*eta*xi*xi+9.*eta*eta);
 	else if ( m == 4 )
-	  return 0.4960783708246*(11*xi*xi-1)*(mu*mu*mu*mu-6*mu*mu*eta*eta+eta*eta*eta*eta);
+	  return 0.4960783708246*(11.*xi*xi-1.)*(mu*mu*mu*mu-6.*mu*mu*eta*eta+eta*eta*eta*eta);
 	else if ( m == 5 )
-	  return 2.3268138086233*mu*xi*(mu*mu*mu*mu-10*mu*mu*eta*eta+5*eta*eta*eta*eta);
+	  return 2.3268138086233*mu*xi*(mu*mu*mu*mu-10.*mu*mu*eta*eta+5.*eta*eta*eta*eta);
 	else if ( m == 6 )
-	  return 0.6716932893814*(mu*mu*mu*mu*mu*mu-15*mu*mu*mu*mu*eta*eta+15*mu*mu*eta*eta*eta*eta-eta*eta*eta*eta*eta*eta);
+	  return 0.6716932893814*(mu*mu*mu*mu*mu*mu-15.*mu*mu*mu*mu*eta*eta+15.*mu*mu*eta*eta*eta*eta-eta*eta*eta*eta*eta*eta);
   }
   else
   {
@@ -206,12 +206,14 @@ double SphericalHarmonics::get_Y_lm(const int    l,
     // Normalization so that phi_00 = phi, phi_1m = current components, etc.
     // This leads to a match with definitions given by Hebert.
     double del = (m == 0) ? 1.0 : 2.0;
-    double norm = std::pow(-1.0, m) *
-                  std::sqrt(del * detran_utilities::four_pi / (2.*l + 1.));
+    double norm = std::sqrt(del * detran_utilities::four_pi / (2.*l + 1.));
     if (m >= 0)
       return norm * boost::math::spherical_harmonic_r(l, m, theta, phi);
     else
-      return norm * boost::math::spherical_harmonic_i(l,-m, theta, phi);
+    {
+      if (eta < 0.0) phi += detran_utilities::pi; // Corrects octant sign
+      return norm * boost::math::spherical_harmonic_i(l, m, theta, phi);
+    }
 #else
     // Degree not implemented.
     THROW("Maximum Legendre order is 6. For higher orders, enable Boost.");
