@@ -171,7 +171,8 @@ namespace detran_angle
  * that there is no variation in the polar (\f$z\f$) direction.  The moments
  *  @f$\phi^0_{l>0}\f$ represent net changes in the \f$z\f$ direction, and
  * so should be eliminated for efficiency.  For 2D problems, the number of
- * moments is therefore \f$(L+1)^2-L\f$. This is handled in
+ * moments is therefore \f$(L+1)^2-L\f$. Further, Only those
+ *  moments for which \f$l+m\f$ is even are retained (see Hebert). This is handled in
  *  @ref Moment_to_Discrete.
  *
  * It should be noted that the for \f$m=0 \f$, the spherical harmonics as
